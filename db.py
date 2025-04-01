@@ -49,13 +49,13 @@ def init_database():
 def add_user(user):
     conn, cur = create_connection()
     cur.execute("""
-        INSERT INTO users (id, username, first_name, last_name)
+        INSERT INTO users (user_id, username, first_name, last_name)
         VALUES (%s, %s, %s, %s)
-        ON CONFLICT (id) DO UPDATE SET
+        ON CONFLICT (user_id) DO UPDATE SET
             username = EXCLUDED.username,
             first_name = EXCLUDED.first_name,
             last_name = EXCLUDED.last_name
-    """, (user.id, user.username, user.first_name, user.last_name))
+    """, (user.user_id, user.username, user.first_name, user.last_name))
     
     conn.commit()
     cur.close()

@@ -18,8 +18,11 @@ default_model_dict      = gemini.default_model_dict
 gemini_draw_dict        = gemini.gemini_draw_dict
 
 async def start(message: Message, bot: TeleBot) -> None:
-    user_id = message.from_user
-    add_user(user_id)
+    user = message.from_user
+    print('')
+    print(user)
+    print('')
+    add_user(user)
     try:
         await bot.reply_to(message , escape("Welcome, you can ask me questions now. \nFor example: `Who is john lennon?`"), parse_mode="MarkdownV2")
     except IndexError:
