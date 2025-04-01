@@ -1,9 +1,5 @@
 ```python
-
-
 # --- FILE: config.py ---
-# config.py
-
 from google.genai import types
 conf = {
     "error_info":           "⚠️⚠️⚠️\nSomething went wrong !\nplease try to change your prompt or contact the admin !",

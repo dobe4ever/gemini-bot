@@ -67,8 +67,6 @@ Click on the button below for a one-click deployment.
 
 (
 echo '```python' &&
-echo ''
-echo ''
 echo '# --- FILE: config.py ---' && cat config.py &&
 echo ''
 echo ''

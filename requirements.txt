@@ -4,3 +4,6 @@ aiohttp
 md2tgmd
 Pillow
 
+psycopg2-binary==2.9.5
+SQLAlchemy==2.0.15
+pymysql
