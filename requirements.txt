@@ -8,5 +8,5 @@ Pillow
 # SQLAlchemy==2.0.15
 # pymysql
 
-# psycopg2-binary
+psycopg2-binary
 # SQLAlchemy
