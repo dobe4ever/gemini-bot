@@ -27,7 +27,10 @@ def init_database():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
-    
+    conn.commit()
+    cur.close()
+    conn.close()
+
     # Create messages table with user_id foreign key
     cur.execute("""
         CREATE TABLE IF NOT EXISTS messages (
