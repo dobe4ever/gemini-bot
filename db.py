@@ -1,4 +1,3 @@
-# --- FILE: db.py ---
 import os
 import psycopg2
 import logging
@@ -60,3 +59,4 @@ def test_db_connection():
         # create_connection already logged the error
         logger.error("Database test connection failed: Could not establish connection.")
         return False
+        
