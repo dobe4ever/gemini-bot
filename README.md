@@ -86,5 +86,7 @@ echo '# --- FILE: main.py ---' && cat main.py &&
 echo ''
 echo ''
 echo '# --- FILE: requirements.txt ---' && cat requirements.txt &&
+echo ''
 echo '```'
 ) > CODEBASE.md
+

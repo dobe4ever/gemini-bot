@@ -1,89 +1,62 @@
-# db.py
-
+# --- FILE: db.py ---
 import os
 import psycopg2
+import logging
 
-# Database constants
-DATABASE_URL = os.environ['DATABASE_URL']
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Database constants - Using direct access as requested
+try:
+    # This will RAISE KeyError immediately if not set in Railway env vars
+    DATABASE_URL = os.environ['DATABASE_URL']
+    logger.info("DATABASE_URL retrieved from environment.")
+except KeyError:
+    logger.critical("FATAL: DATABASE_URL environment variable not set!")
+    # Optionally raise it again to ensure the app stops if this module is imported
+    raise ValueError("DATABASE_URL is mandatory and was not found in environment variables.")
 
 # Create database connection
 def create_connection():
-    conn = psycopg2.connect(DATABASE_URL)
-    return conn, conn.cursor()
+    """Creates and returns a database connection and cursor."""
+    # DATABASE_URL existence is checked at module load time now
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor()
+        # Removed the redundant info log from here, it's noisy on every call
+        # logger.info("Database connection established successfully.")
+        return conn, cursor
+    except psycopg2.OperationalError as e:
+        logger.error(f"Database connection failed: {e}")
+        return None, None
+    except Exception as e:
+        logger.error(f"An unexpected error occurred during DB connection: {e}")
+        return None, None
 
-# Initialize database
-def init_database():
-    conn, cur = create_connection()
-    
-    # cur.execute("DROP TABLE IF EXISTS users;")
+def close_connection(conn, cursor):
+    """Closes the database cursor and connection."""
+    if cursor:
+        cursor.close()
+    if conn:
+        conn.close()
+    # logger.info("Database connection closed.") # Can be noisy
 
-    # Create users table
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id BIGINT PRIMARY KEY,
-            username TEXT,
-            first_name TEXT,
-            last_name TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    # Create messages table with user_id foreign key
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS messages (
-            id SERIAL PRIMARY KEY,
-            user_id BIGINT NOT NULL,
-            role TEXT NOT NULL,
-            content TEXT NOT NULL,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        )
-    """)
-
-    conn.commit()
-    cur.close()
-    conn.close()
-    return True
-
-
-def add_user(user):
-    conn, cur = create_connection()
-    cur.execute("""
-        INSERT INTO users (user_id, username, first_name, last_name)
-        VALUES (%s, %s, %s, %s)
-        ON CONFLICT (user_id) DO UPDATE SET
-            username = EXCLUDED.username,
-            first_name = EXCLUDED.first_name,
-            last_name = EXCLUDED.last_name
-    """, (user.id, user.username, user.first_name, user.last_name))
-    
-    conn.commit()
-    cur.close()
-    conn.close()
-    return user
-
-# Message
-def add_message(user_id, role, content):
-    conn, cur = create_connection()
-    cur.execute(
-        "INSERT INTO messages (user_id, role, content) VALUES (%s, %s, %s)",
-        (user_id, role, content)
-    )
-    conn.commit()
-    cur.close()
-    conn.close()
-    return True
-
-def get_messages(user_id, limit=25):
-    conn, cur = create_connection()
-    cur.execute(
-        "SELECT role, content FROM messages WHERE user_id = %s ORDER BY id ASC LIMIT %s",
-        (user_id, limit)
-    )
-    result = cur.fetchall()
-    cur.close()
-    conn.close()
-    return result
+def test_db_connection():
+    """Tests the database connection by executing a simple query."""
+    logger.info("Attempting database connection test...")
+    conn, cursor = create_connection()
+    if conn and cursor:
+        try:
+            cursor.execute("SELECT 1;") # Simple query to test
+            logger.info("Database test query executed successfully.")
+            close_connection(conn, cursor) # Close connection after successful test
+            return True
+        except Exception as e:
+            logger.error(f"Database test query failed: {e}")
+            close_connection(conn, cursor) # Still close connection on failure
+            return False
+    else:
+        # create_connection already logged the error
+        logger.error("Database test connection failed: Could not establish connection.")
+        return False

@@ -79,9 +79,9 @@ FROM python:3.9.18-slim-bullseye
 WORKDIR /app
 COPY ./ /app/
 RUN pip install --no-cache-dir -r requirements.txt
-ENV TELEGRAM_BOT_API_KEY=""
+ENV BOT_TOKEN=""
 ENV GEMINI_API_KEYS=""
-CMD ["sh", "-c", "python main.py ${TELEGRAM_BOT_API_KEY} ${GEMINI_API_KEYS}"]
+CMD ["sh", "-c", "python main.py ${BOT_TOKEN} ${GEMINI_API_KEYS}"]
 
 
 # --- FILE: gemini.py ---
@@ -389,16 +389,16 @@ async def main():
     bot = AsyncTeleBot(options.tg_token)
     await bot.delete_my_commands(scope=None, language_code=None)
     await bot.set_my_commands(
-    commands=[
-        telebot.types.BotCommand("start", "Start"),
-        telebot.types.BotCommand("gemini", "using gemini-2.0-flash-exp"),
-        telebot.types.BotCommand("gemini_pro", "using gemini-1.5-pro"),
-        telebot.types.BotCommand("draw", "draw picture"),
-        telebot.types.BotCommand("edit", "edit photo"),
-        telebot.types.BotCommand("clear", "Clear all history"),
-        telebot.types.BotCommand("switch","switch default model")
-    ],
-)
+        commands=[
+            telebot.types.BotCommand("start", "Start"),
+            telebot.types.BotCommand("gemini", "using gemini-2.0-flash-exp"),
+            telebot.types.BotCommand("gemini_pro", "using gemini-1.5-pro"),
+            telebot.types.BotCommand("draw", "draw picture"),
+            telebot.types.BotCommand("edit", "edit photo"),
+            telebot.types.BotCommand("clear", "Clear all history"),
+            telebot.types.BotCommand("switch","switch default model")
+        ],
+    )
     print("Bot init done.")
 
     # Init commands
@@ -429,5 +429,4 @@ google-genai
 aiohttp
 md2tgmd
 Pillow
-
 ```
