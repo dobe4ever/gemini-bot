@@ -1,5 +1,3 @@
-# handlers.py
-
 from telebot import TeleBot
 from telebot.types import Message
 from md2tgmd import escape

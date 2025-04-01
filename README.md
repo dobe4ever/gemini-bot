@@ -1,5 +1,3 @@
-<!-- README.md -->
-
 # Gemini_Telegram_Bot
 A Telegram Bot using Gemini API
 # Demo
@@ -65,3 +63,30 @@ Click on the button below for a one-click deployment.
 # Reference
 1. [https://github.com/yihong0618/tg_bot_collections](https://github.com/yihong0618/tg_bot_collections)
 2. [https://github.com/yym68686/md2tgmd](https://github.com/yym68686/md2tgmd)
+
+
+(
+echo '```python' &&
+echo ''
+echo ''
+echo '# --- FILE: config.py ---' && cat config.py &&
+echo ''
+echo ''
+echo '# --- FILE: docker-image.yml ---' && cat docker-image.yml &&
+echo ''
+echo ''
+echo '# --- FILE: Dockerfile ---' && cat Dockerfile &&
+echo ''
+echo ''
+echo '# --- FILE: gemini.py ---' && cat gemini.py &&
+echo ''
+echo ''
+echo '# --- FILE: handlers.py ---' && cat handlers.py &&
+echo ''
+echo ''
+echo '# --- FILE: main.py ---' && cat main.py &&
+echo ''
+echo ''
+echo '# --- FILE: requirements.txt ---' && cat requirements.txt &&
+echo '```'
+) > CODEBASE.md

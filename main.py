@@ -1,5 +1,3 @@
-# main.py
-
 import argparse
 import traceback
 import asyncio
