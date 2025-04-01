@@ -43,8 +43,6 @@ generation_config = types.GenerateContentConfig(
 )
 
 # --- FILE: docker-image.yml ---
-# docker-image.yml
-
 name: Docker Image CI
 
 on:
@@ -81,8 +79,6 @@ jobs:
 
 
 # --- FILE: Dockerfile ---
-# Dockerfile
-
 FROM python:3.9.18-slim-bullseye
 WORKDIR /app
 COPY ./ /app/
@@ -93,8 +89,6 @@ CMD ["sh", "-c", "python main.py ${TELEGRAM_BOT_API_KEY} ${GEMINI_API_KEYS}"]
 
 
 # --- FILE: gemini.py ---
-# gemini.py
-
 import io
 import time
 import traceback
@@ -243,8 +237,6 @@ async def gemini_draw(bot:TeleBot, message:Message, m:str):
             await bot.send_photo(message.chat.id, photo)
 
 # --- FILE: handlers.py ---
-# handlers.py
-
 from telebot import TeleBot
 from telebot.types import Message
 from md2tgmd import escape
@@ -379,8 +371,6 @@ async def draw_handler(message: Message, bot: TeleBot) -> None:
 
 
 # --- FILE: main.py ---
-# main.py
-
 import argparse
 import traceback
 import asyncio
