@@ -55,7 +55,7 @@ def add_user(user):
             username = EXCLUDED.username,
             first_name = EXCLUDED.first_name,
             last_name = EXCLUDED.last_name
-    """, (user.user_id, user.username, user.first_name, user.last_name))
+    """, (user.id, user.username, user.first_name, user.last_name))
     
     conn.commit()
     cur.close()
